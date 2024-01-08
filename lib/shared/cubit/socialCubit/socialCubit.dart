@@ -51,6 +51,7 @@ class socialCubit extends Cubit<socialStates> {
     }
   }
 
+ String fileProfileImage = '';
   void uploadImage() {
     File file = File(profileImage!.path);
     try {
@@ -60,7 +61,7 @@ class socialCubit extends Cubit<socialStates> {
           .putFile(file)
           .then((value) {
         value.ref.getDownloadURL().then((value) {
-          user_model!.image = value;
+          fileProfileImage = value;
         });
       });
     } on FirebaseAuthException catch (e) {
@@ -80,6 +81,7 @@ class socialCubit extends Cubit<socialStates> {
     }
   }
 
+ String fileCoverImage = '';
   void uploadCover() {
     try {
       File file = File(coverImage!.path);
@@ -89,7 +91,7 @@ class socialCubit extends Cubit<socialStates> {
           .putFile(file)
           .then((value) {
         value.ref.getDownloadURL().then((value) {
-          user_model!.background = value;
+          fileCoverImage = value;
         });
       });
     } on FirebaseAuthException catch (e) {
@@ -157,6 +159,7 @@ class socialCubit extends Cubit<socialStates> {
 
 // getPosts
   late List<postModel> myPosts = [];
+  late List<postModel> Posts = [];
   int myPosts_Done = 0;
   String welcomeImage = '';
   void getMyPosts() async {
@@ -165,15 +168,13 @@ class socialCubit extends Cubit<socialStates> {
       emit(myPostsLoadingState());
       await FirebaseFirestore.instance
           .collection('myPosts')
+          .orderBy('date')
           .snapshots()
           .listen((event) {
         myPosts = [];
         event.docs.forEach((element) {
-          if (element != event.docs.first) ;
           myPosts.add(postModel.fromJson(element.data()));
         });
-        myPosts.shuffle();
-        myPosts.insert(0, postModel.fromJson(event.docs.first.data()));
         postController.text = '';
         emit(myPostsSuccessState());
       });
@@ -186,6 +187,7 @@ class socialCubit extends Cubit<socialStates> {
   int updateUserDataCounter = 1;
   void updateUserData() async {
     try {
+      user_model_Done = 0;
       emit(updateUserDataLoadingState());
       await FirebaseFirestore.instance.collection('users').doc(uIdConst).set({
         "name": nameController.text,
@@ -194,9 +196,10 @@ class socialCubit extends Cubit<socialStates> {
         "phone": phoneController.text,
         "isEmailVerified": false,
         "uId": user_model!.uId,
-        "background": user_model!.background,
-        "image": user_model!.image,
+        "background": fileCoverImage==''?user_model!.background:fileCoverImage,
+        "image": fileProfileImage==''?user_model!.image:fileProfileImage,
       }).then((value) {
+        emit(updateUserDataSuccessState());
         getUserData(uIdConst);
       });
     } on FirebaseAuthException catch (e) {
