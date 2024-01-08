@@ -72,7 +72,7 @@ class myLoginCubit extends Cubit<myLoginStates> {
         key: 'uId',
       );
     }).then((value) {
-      socialCubit.get(context)..getUserData(uIdConst);
+      socialCubit.get(context).getUserData(uIdConst);
       print(uIdConst);
 
       changeUIdDone = true;
