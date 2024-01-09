@@ -207,7 +207,11 @@ class registerScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("you have have an account?"),
+                            Text("you have an account?",
+                            style: const TextStyle(
+                                  fontSize: 15
+                                ),
+                            ),
                             TextButton(
                               onPressed: () {
                                 cubit.emailController.text = '';
@@ -224,6 +228,7 @@ class registerScreen extends StatelessWidget {
                                 'SignIn now',
                                 style: const TextStyle(
                                   color: Colors.red,
+                                  fontSize: 20
                                 ),
                               ),
                             )

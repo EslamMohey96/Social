@@ -131,9 +131,6 @@ final scrollController = ScrollController();
                               onPressed: () {
                                 cubit.sendMassage(
                                   receiver: user_model.uId,
-                                  date: DateFormat('yyyy-MM-dd hh:mm:ss')
-                                      .format(DateTime.now())
-                                      .toString(),
                                   text: cubit.chatController.text,
                                 );
                               },

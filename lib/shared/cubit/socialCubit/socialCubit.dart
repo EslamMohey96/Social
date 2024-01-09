@@ -51,7 +51,7 @@ class socialCubit extends Cubit<socialStates> {
     }
   }
 
- String fileProfileImage = '';
+  String fileProfileImage = '';
   void uploadImage() {
     File file = File(profileImage!.path);
     try {
@@ -81,7 +81,7 @@ class socialCubit extends Cubit<socialStates> {
     }
   }
 
- String fileCoverImage = '';
+  String fileCoverImage = '';
   void uploadCover() {
     try {
       File file = File(coverImage!.path);
@@ -196,8 +196,9 @@ class socialCubit extends Cubit<socialStates> {
         "phone": phoneController.text,
         "isEmailVerified": false,
         "uId": user_model!.uId,
-        "background": fileCoverImage==''?user_model!.background:fileCoverImage,
-        "image": fileProfileImage==''?user_model!.image:fileProfileImage,
+        "background":
+            fileCoverImage == '' ? user_model!.background : fileCoverImage,
+        "image": fileProfileImage == '' ? user_model!.image : fileProfileImage,
       }).then((value) {
         emit(updateUserDataSuccessState());
         getUserData(uIdConst);
@@ -257,36 +258,41 @@ class socialCubit extends Cubit<socialStates> {
 // sendMassage
   void sendMassage({
     required String receiver,
-    required String date,
     required String text,
-  }) {
+  }) async {
     try {
-      massageModel model = massageModel(
-        date: date,
-        sender: user_model!.uId,
-        receiver: receiver,
-        text: text,
-      );
+      // String date =
+      //     DateFormat('yyyy-MM-dd hh:mm:ss').format(DateTime.now()).toString();
       chatController.text = '';
-      FirebaseFirestore.instance
+      // print(date);
+      await FirebaseFirestore.instance
           .collection('users')
           .doc(user_model!.uId)
           .collection('chats')
           .doc(receiver)
           .collection('massages')
-          .add(model.toMap())
-          .then((value) {
-        emit(sendMassageSuccessState());
-      });
-      FirebaseFirestore.instance
-          .collection('users')
-          .doc(receiver)
-          .collection('chats')
-          .doc(user_model!.uId)
-          .collection('massages')
-          .add(model.toMap())
-          .then((value) {
-        emit(sendMassageSuccessState());
+          .add({
+        'date':  DateFormat('yyyy-MM-dd hh:mm:ss').format(DateTime.now()).toString(),
+        'sender': user_model!.uId,
+        'receiver': receiver,
+        'text': text,
+      }).then((value) {
+        print('${value}----------');
+        print('----------');
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(receiver)
+            .collection('chats')
+            .doc(user_model!.uId)
+            .collection('massages')
+            .add({
+          'date':  DateFormat('yyyy-MM-dd hh:mm:ss').format(DateTime.now()).toString(),
+          'sender': user_model!.uId,
+          'receiver': receiver,
+          'text': text,
+        }).then((value) {
+          emit(sendMassageSuccessState());
+        });
       });
     } on FirebaseAuthException catch (e) {
       emit(sendMassageErrorState(e.message));
@@ -304,8 +310,8 @@ class socialCubit extends Cubit<socialStates> {
           .doc(user_model!.uId)
           .collection('chats')
           .doc(receiver)
-          .collection('massages')
-          .orderBy('date')
+          .collection("massages")
+          .orderBy("date")          
           .snapshots()
           .listen((event) {
         massages_list = [];
