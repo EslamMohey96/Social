@@ -107,46 +107,52 @@ class logInScreen extends StatelessWidget {
                             FadeInRight(
                               delay: Duration(milliseconds: 300),
                               duration: Duration(milliseconds: 1500),
-                              child: textFormField(
-                                context: context,
-                                controller: cubit.emailController,
-                                textInputType: TextInputType.emailAddress,
-                                labelText: "Email Address",
-                                prefixIcon: Icon(IconBroken.Profile),
-                                valid: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'email must\'n be empty ';
-                                  }
-                                  return null;
-                                },
+                              child: Container(
+                                width: cubit.constraints!>450?450 :double.infinity,
+                                child: textFormField(
+                                  context: context,
+                                  controller: cubit.emailController,
+                                  textInputType: TextInputType.emailAddress,
+                                  labelText: "Email Address",
+                                  prefixIcon: Icon(IconBroken.Profile),
+                                  valid: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'email must\'n be empty ';
+                                    }
+                                    return null;
+                                  },
+                                ),
                               ),
                             ),
                             sizeBoxH(20),
                             FadeInLeft(
                               delay: Duration(milliseconds: 300),
                               duration: Duration(milliseconds: 1500),
-                              child: textFormField(
-                                context: context,
-                                controller: cubit.passwordController,
-                                textInputType: TextInputType.visiblePassword,
-                                visible: !cubit.visiblePassword,
-                                labelText: "Password",
-                                prefixIcon: Icon(IconBroken.Lock),
-                                suffixIcon: cubit.visiblePassword
-                                    ? Icon(Icons.visibility_sharp)
-                                    : Icon(Icons.visibility_off_sharp),
-                                suffixPressed: () {
-                                  print(cubit.visiblePassword);
-                                  cubit.changeVisiblePassword(
-                                      !cubit.visiblePassword);
-                                  print(cubit.visiblePassword);
-                                },
-                                valid: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'password must\'n be empty ';
-                                  }
-                                  return null;
-                                },
+                              child: Container(
+                                width: cubit.constraints!>450?450 :double.infinity,
+                                child: textFormField(
+                                  context: context,
+                                  controller: cubit.passwordController,
+                                  textInputType: TextInputType.visiblePassword,
+                                  visible: !cubit.visiblePassword,
+                                  labelText: "Password",
+                                  prefixIcon: Icon(IconBroken.Lock),
+                                  suffixIcon: cubit.visiblePassword
+                                      ? Icon(Icons.visibility_sharp)
+                                      : Icon(Icons.visibility_off_sharp),
+                                  suffixPressed: () {
+                                    print(cubit.visiblePassword);
+                                    cubit.changeVisiblePassword(
+                                        !cubit.visiblePassword);
+                                    print(cubit.visiblePassword);
+                                  },
+                                  valid: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'password must\'n be empty ';
+                                    }
+                                    return null;
+                                  },
+                                ),
                               ),
                             ),
                             sizeBoxH(20),
@@ -154,6 +160,7 @@ class logInScreen extends StatelessWidget {
                               delay: Duration(milliseconds: 300),
                               duration: Duration(milliseconds: 1500),
                               child: Container(
+                                width: cubit.constraints!>450?450 :double.infinity,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
                                 ),
@@ -189,7 +196,7 @@ class logInScreen extends StatelessWidget {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const registerScreen()),
+                                                 registerScreen()),
                                       );
                                     },
                                     child: Text(

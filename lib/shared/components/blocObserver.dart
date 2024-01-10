@@ -16,7 +16,33 @@ class blocObserver extends BlocObserver {
   @override
   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
     super.onError(bloc, error, stackTrace);
-    print('onError -- ${bloc.runtimeType} , $error');
+    print('Error  occurred in ${bloc.runtimeType}\n'
+        '-----------------Error--------------------\n'
+        '$error'
+        '-----------------StackTrace--------------------\n'
+        '${stackTrace.toString()}');
+    // print('onError -- ${bloc.runtimeType} , $error');
+  }
+
+  @override
+  void onTransition(Bloc bloc, Transition transition) {
+    print('-----------------Bloc Transition------------------------\n'
+        'bloc: ${bloc.runtimeType}\n'
+        'Event: ${transition.event.runtimeType}\n'
+        'CurrentState: ${transition.currentState.runtimeType}: ${transition.currentState.toString()} \n'
+        'NextState: ${transition.nextState.runtimeType}: ${transition.nextState.toString()} \n'
+        '----------------------------------------------------------\n');
+
+    super.onTransition(bloc, transition);
+  }
+
+  @override
+  void onEvent(Bloc bloc, Object? event) {
+    print('--------------------------Bloc Event-----------------------\n'
+        'bloc: ${bloc.runtimeType}\n'
+        'event: ${event.runtimeType}\n'
+        '-------------------------------------------------------------\n');
+    super.onEvent(bloc, event);
   }
 
   @override
