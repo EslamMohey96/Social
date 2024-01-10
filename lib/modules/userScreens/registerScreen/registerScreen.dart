@@ -98,7 +98,7 @@ class registerScreen extends StatelessWidget {
                         delay: Duration(milliseconds: 300),
                         duration: Duration(milliseconds: 1500),
                         child: Container(
-                           width: myLoginCubit.get(context).constraints!>450?450 :double.infinity,
+                           width: myLoginCubit.get(context).constraints!>350?350 :double.infinity,
                           child: textFormField(
                             context: context,
                             controller: cubit.nameController,
@@ -118,7 +118,7 @@ class registerScreen extends StatelessWidget {
                         delay: Duration(milliseconds: 300),
                         duration: Duration(milliseconds: 1500),
                         child: Container(
-                           width: myLoginCubit.get(context).constraints!>450?450 :double.infinity,
+                           width: myLoginCubit.get(context).constraints!>350?350 :double.infinity,
                           child: textFormField(
                             context: context,
                             controller: cubit.emailController,
@@ -139,7 +139,7 @@ class registerScreen extends StatelessWidget {
                         delay: Duration(milliseconds: 300),
                         duration: Duration(milliseconds: 1500),
                         child: Container(
-                           width: myLoginCubit.get(context).constraints!>450?450 :double.infinity,
+                           width: myLoginCubit.get(context).constraints!>350?350 :double.infinity,
                           child: textFormField(
                             context: context,
                             controller: cubit.phoneController,
@@ -159,7 +159,7 @@ class registerScreen extends StatelessWidget {
                         delay: Duration(milliseconds: 300),
                         duration: Duration(milliseconds: 1500),
                         child: Container(
-                           width: myLoginCubit.get(context).constraints!>450?450 :double.infinity,
+                           width: myLoginCubit.get(context).constraints!>350?350 :double.infinity,
                           child: textFormField(
                             context: context,
                             controller: cubit.passwordController,
@@ -189,7 +189,7 @@ class registerScreen extends StatelessWidget {
                         duration: Duration(milliseconds: 1500),
                         child: cubit.registerDone
                             ? Container(
-                              width: myLoginCubit.get(context).constraints!>450?450 :double.infinity,
+                              width: myLoginCubit.get(context).constraints!>350?350 :double.infinity,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
                                 ),
@@ -203,6 +203,7 @@ class registerScreen extends StatelessWidget {
                                         phone: cubit.phoneController.text,
                                         email: cubit.emailController.text,
                                         password: cubit.passwordController.text,
+                                        
                                       );
                                     }
                                   },

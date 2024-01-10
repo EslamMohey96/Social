@@ -45,177 +45,172 @@ class logInScreen extends StatelessWidget {
             body: Container(
               color: Colors.black,
               padding: const EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Center(
-                    child: SingleChildScrollView(
-                      child: Form(
-                        key: cubit.formKey,
-                        child: Column(
-                          children: [
-                            FadeInDown(
-                              delay: Duration(milliseconds: 300),
-                              duration: Duration(milliseconds: 1500),
-                              child: Column(
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Form(
+                    key: cubit.formKey,
+                    child: Column(
+                      children: [
+                        FadeInDown(
+                          delay: Duration(milliseconds: 300),
+                          duration: Duration(milliseconds: 1500),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Social',
-                                        style: TextStyle(
-                                          color: Colors.red,
-                                          fontSize: 40,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      // : Text(
-                                      //     'متجر',
-                                      //     style: TextStyle(
-                                      //       color: Colors.red,
-                                      //       fontSize: 40,
-                                      //       fontWeight: FontWeight.bold,
-                                      //     ),
-                                      //   ),
-                                      sizeBoxW(10),
-
-                                      Text(
-                                        'App',
-                                        style: TextStyle(
-                                          fontSize: 40,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      //
-                                    ],
-                                  ),
-
                                   Text(
-                                    'Login now to communicate with your friends.',
-                                    overflow: TextOverflow.ellipsis,
+                                    'Social',
                                     style: TextStyle(
-                                      fontSize: 15,
+                                      color: Colors.red,
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  // : Text(
+                                  //     'متجر',
+                                  //     style: TextStyle(
+                                  //       color: Colors.red,
+                                  //       fontSize: 40,
+                                  //       fontWeight: FontWeight.bold,
+                                  //     ),
+                                  //   ),
+                                  sizeBoxW(10),
+              
+                                  Text(
+                                    'App',
+                                    style: TextStyle(
+                                      fontSize: 40,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   //
                                 ],
                               ),
-                            ),
-                            sizeBoxH(20),
-                            FadeInRight(
-                              delay: Duration(milliseconds: 300),
-                              duration: Duration(milliseconds: 1500),
-                              child: Container(
-                                width: cubit.constraints!>450?450 :double.infinity,
-                                child: textFormField(
-                                  context: context,
-                                  controller: cubit.emailController,
-                                  textInputType: TextInputType.emailAddress,
-                                  labelText: "Email Address",
-                                  prefixIcon: Icon(IconBroken.Profile),
-                                  valid: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'email must\'n be empty ';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ),
-                            ),
-                            sizeBoxH(20),
-                            FadeInLeft(
-                              delay: Duration(milliseconds: 300),
-                              duration: Duration(milliseconds: 1500),
-                              child: Container(
-                                width: cubit.constraints!>450?450 :double.infinity,
-                                child: textFormField(
-                                  context: context,
-                                  controller: cubit.passwordController,
-                                  textInputType: TextInputType.visiblePassword,
-                                  visible: !cubit.visiblePassword,
-                                  labelText: "Password",
-                                  prefixIcon: Icon(IconBroken.Lock),
-                                  suffixIcon: cubit.visiblePassword
-                                      ? Icon(Icons.visibility_sharp)
-                                      : Icon(Icons.visibility_off_sharp),
-                                  suffixPressed: () {
-                                    print(cubit.visiblePassword);
-                                    cubit.changeVisiblePassword(
-                                        !cubit.visiblePassword);
-                                    print(cubit.visiblePassword);
-                                  },
-                                  valid: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'password must\'n be empty ';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ),
-                            ),
-                            sizeBoxH(20),
-                            FadeInUp(
-                              delay: Duration(milliseconds: 300),
-                              duration: Duration(milliseconds: 1500),
-                              child: Container(
-                                width: cubit.constraints!>450?450 :double.infinity,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: defaultButton(
-                                  function: () {
-                                    if (cubit.formKey.currentState!
-                                        .validate()) {
-                                      cubit.userLogin(
-                                        context: context,
-                                        email: cubit.emailController.text,
-                                        password: cubit.passwordController.text,
-                                      );
-                                    }
-                                  },
-                                  widget: Text("LogIn"),
+              
+                              Text(
+                                'Login now to communicate with your friends.',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                               //
-                            ),
-                            sizeBoxH(10),
-                            FadeInUp(
-                              delay: Duration(milliseconds: 300),
-                              duration: Duration(milliseconds: 1500),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text("don\'t have an account?"),
-                                  TextButton(
-                                    onPressed: () {
-                                      cubit.emailController.text = '';
-                                      cubit.passwordController.text = '';
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                 registerScreen()),
-                                      );
-                                    },
-                                    child: Text(
-                                      'Register Now',
-                                      style: const TextStyle(
-                                        color: Colors.red,
-                                      ),
-                                    ),
-                                    //
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
+                        sizeBoxH(20),
+                        FadeInRight(
+                          delay: Duration(milliseconds: 300),
+                          duration: Duration(milliseconds: 1500),
+                          child: Container(
+                            width: cubit.constraints!>350?350 :double.infinity,
+                            child: textFormField(
+                              context: context,
+                              controller: cubit.emailController,
+                              textInputType: TextInputType.emailAddress,
+                              labelText: "Email Address",
+                              prefixIcon: Icon(IconBroken.Profile),
+                              valid: (value) {
+                                if (value!.isEmpty) {
+                                  return 'email must\'n be empty ';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ),
+                        sizeBoxH(20),
+                        FadeInLeft(
+                          delay: Duration(milliseconds: 300),
+                          duration: Duration(milliseconds: 1500),
+                          child: Container(
+                            width: cubit.constraints!>350?350 :double.infinity,
+                            child: textFormField(
+                              context: context,
+                              controller: cubit.passwordController,
+                              textInputType: TextInputType.visiblePassword,
+                              visible: !cubit.visiblePassword,
+                              labelText: "Password",
+                              prefixIcon: Icon(IconBroken.Lock),
+                              suffixIcon: cubit.visiblePassword
+                                  ? Icon(Icons.visibility_sharp)
+                                  : Icon(Icons.visibility_off_sharp),
+                              suffixPressed: () {
+                                print(cubit.visiblePassword);
+                                cubit.changeVisiblePassword(
+                                    !cubit.visiblePassword);
+                                print(cubit.visiblePassword);
+                              },
+                              valid: (value) {
+                                if (value!.isEmpty) {
+                                  return 'password must\'n be empty ';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ),
+                        sizeBoxH(20),
+                        FadeInUp(
+                          delay: Duration(milliseconds: 300),
+                          duration: Duration(milliseconds: 1500),
+                          child: Container(
+                            width: cubit.constraints!>350?350 :double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: defaultButton(
+                              function: () {
+                                if (cubit.formKey.currentState!
+                                    .validate()) {
+                                  cubit.userLogin(
+                                    context: context,
+                                    email: cubit.emailController.text,
+                                    password: cubit.passwordController.text,
+                                  );
+                                }
+                              },
+                              widget: Text("LogIn"),
+                            ),
+                          ),
+                          //
+                        ),
+                        sizeBoxH(10),
+                        FadeInUp(
+                          delay: Duration(milliseconds: 300),
+                          duration: Duration(milliseconds: 1500),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("don\'t have an account?"),
+                              TextButton(
+                                onPressed: () {
+                                  cubit.emailController.text = '';
+                                  cubit.passwordController.text = '';
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                             registerScreen()),
+                                  );
+                                },
+                                child: Text(
+                                  'Register Now',
+                                  style: const TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                //
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
             ),
           ),

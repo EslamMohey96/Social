@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
             darkTheme: darkMode,
             themeMode: ThemeMode.dark,
             home: LayoutBuilder(builder: (context, constraints) {
-              myLoginCubit.get(context).changeConstraints(constraints.minWidth as int);
+              myLoginCubit.get(context).changeConstraints(constraints.minWidth.round() );
               return startPage;
             }),
           );
