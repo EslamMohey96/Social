@@ -120,7 +120,7 @@ class registerCubit extends Cubit<registerStates> {
         key: 'uId',
       );
     }).then((value) {
-      socialCubit.get(context)..getUserData(uIdConst);
+      socialCubit.get(context).getUserData(uIdConst);
       print(uIdConst);
       registerDone = true;
       changeUIdDone = true;

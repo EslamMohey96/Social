@@ -6,6 +6,8 @@ class myLoginInitState extends myLoginStates {}
 
 class myLogvisiblePasswordState extends myLoginStates {}
 
+class changeConstraintsState extends myLoginStates {}
+
 class changeUIdDoneState extends myLoginStates {}
 
 class loginLoadingState extends myLoginStates {}
@@ -20,4 +22,4 @@ class loginErrorState extends myLoginStates {
   loginErrorState(this.error) {
     toastMessage(message: error);
   }
-}
+} 

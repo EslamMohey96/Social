@@ -10,11 +10,18 @@ class myLoginCubit extends Cubit<myLoginStates> {
   myLoginCubit() : super(myLoginInitState());
   GlobalKey<FormState> formKey = GlobalKey();
   static myLoginCubit get(context) => BlocProvider.of(context);
-  bool visiblePassword = false;
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   List li = [];
 
+  int? constraints ;
+  void changeConstraints(int constraints) {
+    this.constraints = constraints;
+    emit(changeConstraintsState());
+  }
+
+
+  bool visiblePassword = false;
   void changeVisiblePassword(bool pass) {
     visiblePassword = pass;
     emit(myLogvisiblePasswordState());
@@ -72,7 +79,7 @@ class myLoginCubit extends Cubit<myLoginStates> {
         key: 'uId',
       );
     }).then((value) {
-      socialCubit.get(context)..getUserData(uIdConst);
+      socialCubit.get(context).getUserData(uIdConst);
       print(uIdConst);
 
       changeUIdDone = true;

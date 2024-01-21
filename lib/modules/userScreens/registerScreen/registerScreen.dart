@@ -8,9 +8,10 @@ import 'package:social_app/modules/userScreens/loginScreen/logInScreen.dart';
 import 'package:social_app/shared/components/components.dart';
 import 'package:social_app/shared/cubit/registerCubit/registerCubit.dart';
 import 'package:social_app/shared/cubit/registerCubit/registerStatus.dart';
+import 'package:social_app/shared/cubit/loginCubit/loginCubit.dart';
+
 
 class registerScreen extends StatelessWidget {
-  const registerScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -96,78 +97,90 @@ class registerScreen extends StatelessWidget {
                       FadeInRight(
                         delay: Duration(milliseconds: 300),
                         duration: Duration(milliseconds: 1500),
-                        child: textFormField(
-                          context: context,
-                          controller: cubit.nameController,
-                          textInputType: TextInputType.text,
-                          labelText: "Name",
-                          prefixIcon: Icon(IconBroken.Profile),
-                          valid: (value) {
-                            if (value!.isEmpty) {
-                              return 'Name must\'n be empty ';
-                            }
-                          },
+                        child: Container(
+                           width: myLoginCubit.get(context).constraints!>350?350 :double.infinity,
+                          child: textFormField(
+                            context: context,
+                            controller: cubit.nameController,
+                            textInputType: TextInputType.text,
+                            labelText: "Name",
+                            prefixIcon: Icon(IconBroken.Profile),
+                            valid: (value) {
+                              if (value!.isEmpty) {
+                                return 'Name must\'n be empty ';
+                              }
+                            },
+                          ),
                         ),
                       ),
                       sizeBoxH(20),
                       FadeInLeft(
                         delay: Duration(milliseconds: 300),
                         duration: Duration(milliseconds: 1500),
-                        child: textFormField(
-                          context: context,
-                          controller: cubit.emailController,
-                          textInputType: TextInputType.emailAddress,
-                          labelText: "Email Address",
-                          prefixIcon: Icon(IconBroken.Message),
-                          valid: (value) {
-                            if (value!.isEmpty) {
-                              return 'email must\'n be empty ';
-                            }
-                            return null;
-                          },
+                        child: Container(
+                           width: myLoginCubit.get(context).constraints!>350?350 :double.infinity,
+                          child: textFormField(
+                            context: context,
+                            controller: cubit.emailController,
+                            textInputType: TextInputType.emailAddress,
+                            labelText: "Email Address",
+                            prefixIcon: Icon(IconBroken.Message),
+                            valid: (value) {
+                              if (value!.isEmpty) {
+                                return 'email must\'n be empty ';
+                              }
+                              return null;
+                            },
+                          ),
                         ),
                       ),
                       sizeBoxH(20),
                       FadeInRight(
                         delay: Duration(milliseconds: 300),
                         duration: Duration(milliseconds: 1500),
-                        child: textFormField(
-                          context: context,
-                          controller: cubit.phoneController,
-                          textInputType: TextInputType.phone,
-                          labelText: "Phone",
-                          prefixIcon: Icon(IconBroken.Call),
-                          valid: (value) {
-                            if (value!.isEmpty) {
-                              return 'phone must\'n be empty ';
-                            }
-                          },
+                        child: Container(
+                           width: myLoginCubit.get(context).constraints!>350?350 :double.infinity,
+                          child: textFormField(
+                            context: context,
+                            controller: cubit.phoneController,
+                            textInputType: TextInputType.phone,
+                            labelText: "Phone",
+                            prefixIcon: Icon(IconBroken.Call),
+                            valid: (value) {
+                              if (value!.isEmpty) {
+                                return 'phone must\'n be empty ';
+                              }
+                            },
+                          ),
                         ),
                       ),
                       sizeBoxH(20),
                       FadeInLeft(
                         delay: Duration(milliseconds: 300),
                         duration: Duration(milliseconds: 1500),
-                        child: textFormField(
-                          context: context,
-                          controller: cubit.passwordController,
-                          textInputType: TextInputType.visiblePassword,
-                          visible: !cubit.visiblePassword,
-                          labelText: "Password",
-                          prefixIcon: Icon(IconBroken.Lock),
-                          suffixIcon: cubit.visiblePassword
-                              ? Icon(Icons.visibility_sharp)
-                              : Icon(Icons.visibility_off_sharp),
-                          suffixPressed: () {
-                            print(cubit.visiblePassword);
-                            cubit.changeVisiblePassword(!cubit.visiblePassword);
-                            print(cubit.visiblePassword);
-                          },
-                          valid: (value) {
-                            if (value!.isEmpty) {
-                              return 'password must\'n be empty ';
-                            }
-                          },
+                        child: Container(
+                           width: myLoginCubit.get(context).constraints!>350?350 :double.infinity,
+                          child: textFormField(
+                            context: context,
+                            controller: cubit.passwordController,
+                            textInputType: TextInputType.visiblePassword,
+                            visible: !cubit.visiblePassword,
+                            labelText: "Password",
+                            prefixIcon: Icon(IconBroken.Lock),
+                            suffixIcon: cubit.visiblePassword
+                                ? Icon(Icons.visibility_sharp)
+                                : Icon(Icons.visibility_off_sharp),
+                            suffixPressed: () {
+                              print(cubit.visiblePassword);
+                              cubit.changeVisiblePassword(!cubit.visiblePassword);
+                              print(cubit.visiblePassword);
+                            },
+                            valid: (value) {
+                              if (value!.isEmpty) {
+                                return 'password must\'n be empty ';
+                              }
+                            },
+                          ),
                         ),
                       ),
                       sizeBoxH(20),
@@ -176,6 +189,7 @@ class registerScreen extends StatelessWidget {
                         duration: Duration(milliseconds: 1500),
                         child: cubit.registerDone
                             ? Container(
+                              width: myLoginCubit.get(context).constraints!>350?350 :double.infinity,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
                                 ),
@@ -189,10 +203,11 @@ class registerScreen extends StatelessWidget {
                                         phone: cubit.phoneController.text,
                                         email: cubit.emailController.text,
                                         password: cubit.passwordController.text,
+                                        
                                       );
                                     }
                                   },
-                                  widget: Text("SignUp"),
+                                  widget: Text("Sign Up"),
                                 ),
                               )
                             : Center(
@@ -207,7 +222,11 @@ class registerScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("you have have an account?"),
+                            Text("you have an account?",
+                            style: const TextStyle(
+                                  fontSize: 15
+                                ),
+                            ),
                             TextButton(
                               onPressed: () {
                                 cubit.emailController.text = '';
@@ -224,6 +243,7 @@ class registerScreen extends StatelessWidget {
                                 'SignIn now',
                                 style: const TextStyle(
                                   color: Colors.red,
+                                  fontSize: 20
                                 ),
                               ),
                             )

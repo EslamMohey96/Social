@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icon_broken/icon_broken.dart';
@@ -18,7 +19,7 @@ class chatDetails extends StatelessWidget {
     return Builder(
       builder: (context) {
         cubit.getMassage(receiver: user_model.uId);
-
+final scrollController = ScrollController();
         return BlocConsumer<socialCubit, socialStates>(
           listener: ((context, state) {}),
           builder: ((context, state) {
@@ -44,6 +45,7 @@ class chatDetails extends StatelessWidget {
                     Expanded(
                       flex: 16,
                       child: ListView.separated(
+                        // controller: scrollController,
                         itemBuilder: (context, index) {
                           if (cubit.massages_list[index].receiver ==
                               cubit.user_model!.uId) {
@@ -129,9 +131,6 @@ class chatDetails extends StatelessWidget {
                               onPressed: () {
                                 cubit.sendMassage(
                                   receiver: user_model.uId,
-                                  date: DateFormat('yyyy-MM-dd hh:mm:ss')
-                                      .format(DateTime.now())
-                                      .toString(),
                                   text: cubit.chatController.text,
                                 );
                               },

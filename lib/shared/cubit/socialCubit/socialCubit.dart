@@ -25,14 +25,10 @@ class socialCubit extends Cubit<socialStates> {
   GlobalKey<FormState> formKeyPost = GlobalKey();
   GlobalKey<FormState> formKeyMassage = GlobalKey();
 
-  late TextEditingController nameController =
-      TextEditingController(text: user_model!.name);
-  late TextEditingController bioController =
-      TextEditingController(text: user_model!.bio);
-  late TextEditingController emailController =
-      TextEditingController(text: user_model!.email);
-  late TextEditingController phoneController =
-      TextEditingController(text: user_model!.phone);
+  late TextEditingController nameController;
+  late TextEditingController bioController;
+  late TextEditingController phoneController;
+  late TextEditingController emailController = TextEditingController();
   late TextEditingController postController = TextEditingController();
   late TextEditingController chatController = TextEditingController();
 
@@ -51,6 +47,7 @@ class socialCubit extends Cubit<socialStates> {
     }
   }
 
+  String fileProfileImage = '';
   void uploadImage() {
     File file = File(profileImage!.path);
     try {
@@ -60,7 +57,7 @@ class socialCubit extends Cubit<socialStates> {
           .putFile(file)
           .then((value) {
         value.ref.getDownloadURL().then((value) {
-          user_model!.image = value;
+          fileProfileImage = value;
         });
       });
     } on FirebaseAuthException catch (e) {
@@ -80,6 +77,7 @@ class socialCubit extends Cubit<socialStates> {
     }
   }
 
+  String fileCoverImage = '';
   void uploadCover() {
     try {
       File file = File(coverImage!.path);
@@ -89,7 +87,7 @@ class socialCubit extends Cubit<socialStates> {
           .putFile(file)
           .then((value) {
         value.ref.getDownloadURL().then((value) {
-          user_model!.background = value;
+          fileCoverImage = value;
         });
       });
     } on FirebaseAuthException catch (e) {
@@ -157,6 +155,7 @@ class socialCubit extends Cubit<socialStates> {
 
 // getPosts
   late List<postModel> myPosts = [];
+  late List<postModel> Posts = [];
   int myPosts_Done = 0;
   String welcomeImage = '';
   void getMyPosts() async {
@@ -165,15 +164,13 @@ class socialCubit extends Cubit<socialStates> {
       emit(myPostsLoadingState());
       await FirebaseFirestore.instance
           .collection('myPosts')
+          .orderBy('date')
           .snapshots()
           .listen((event) {
         myPosts = [];
         event.docs.forEach((element) {
-          if (element != event.docs.first) ;
           myPosts.add(postModel.fromJson(element.data()));
         });
-        myPosts.shuffle();
-        myPosts.insert(0, postModel.fromJson(event.docs.first.data()));
         postController.text = '';
         emit(myPostsSuccessState());
       });
@@ -186,17 +183,20 @@ class socialCubit extends Cubit<socialStates> {
   int updateUserDataCounter = 1;
   void updateUserData() async {
     try {
+      user_model_Done = 0;
       emit(updateUserDataLoadingState());
       await FirebaseFirestore.instance.collection('users').doc(uIdConst).set({
         "name": nameController.text,
         "bio": bioController.text,
-        "email": emailController.text,
+        "email": user_model!.email,
         "phone": phoneController.text,
         "isEmailVerified": false,
         "uId": user_model!.uId,
-        "background": user_model!.background,
-        "image": user_model!.image,
+        "background":
+            fileCoverImage == '' ? user_model!.background : fileCoverImage,
+        "image": fileProfileImage == '' ? user_model!.image : fileProfileImage,
       }).then((value) {
+        emit(updateUserDataSuccessState());
         getUserData(uIdConst);
       });
     } on FirebaseAuthException catch (e) {
@@ -218,6 +218,11 @@ class socialCubit extends Cubit<socialStates> {
           .then((value) {
         user_model = userModel.fromJson(value.data());
       }).then((value) {
+        fileProfileImage = user_model!.image;
+        fileCoverImage = user_model!.background;
+        nameController = TextEditingController(text: user_model!.name);
+        bioController = TextEditingController(text: user_model!.bio);
+        phoneController = TextEditingController(text: user_model!.phone);
         user_model_Done = 1;
         emit(userDataSuccessState());
       });
@@ -254,36 +259,44 @@ class socialCubit extends Cubit<socialStates> {
 // sendMassage
   void sendMassage({
     required String receiver,
-    required String date,
     required String text,
-  }) {
+  }) async {
     try {
-      massageModel model = massageModel(
-        date: date,
-        sender: user_model!.uId,
-        receiver: receiver,
-        text: text,
-      );
+      // String date =
+      //     DateFormat('yyyy-MM-dd hh:mm:ss').format(DateTime.now()).toString();
       chatController.text = '';
-      FirebaseFirestore.instance
+      // print(date);
+      await FirebaseFirestore.instance
           .collection('users')
           .doc(user_model!.uId)
           .collection('chats')
           .doc(receiver)
           .collection('massages')
-          .add(model.toMap())
-          .then((value) {
-        emit(sendMassageSuccessState());
-      });
-      FirebaseFirestore.instance
-          .collection('users')
-          .doc(receiver)
-          .collection('chats')
-          .doc(user_model!.uId)
-          .collection('massages')
-          .add(model.toMap())
-          .then((value) {
-        emit(sendMassageSuccessState());
+          .add({
+        'date':
+            DateFormat('yyyy-MM-dd hh:mm:ss').format(DateTime.now()).toString(),
+        'sender': user_model!.uId,
+        'receiver': receiver,
+        'text': text,
+      }).then((value) {
+        print('${value}----------');
+        print('----------');
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(receiver)
+            .collection('chats')
+            .doc(user_model!.uId)
+            .collection('massages')
+            .add({
+          'date': DateFormat('yyyy-MM-dd hh:mm:ss')
+              .format(DateTime.now())
+              .toString(),
+          'sender': user_model!.uId,
+          'receiver': receiver,
+          'text': text,
+        }).then((value) {
+          emit(sendMassageSuccessState());
+        });
       });
     } on FirebaseAuthException catch (e) {
       emit(sendMassageErrorState(e.message));
@@ -301,8 +314,8 @@ class socialCubit extends Cubit<socialStates> {
           .doc(user_model!.uId)
           .collection('chats')
           .doc(receiver)
-          .collection('massages')
-          .orderBy('date')
+          .collection("massages")
+          .orderBy("date")
           .snapshots()
           .listen((event) {
         massages_list = [];
@@ -335,3 +348,46 @@ class socialCubit extends Cubit<socialStates> {
     emit(changeNavState());
   }
 }
+
+// class getImageByImagePicker extends Cubit<socialStates> {
+//   getImageByImagePicker() : super(getPostImageLoading());
+//    static getImageByImagePicker get(context) => BlocProvider.of(context);
+//   ImagePicker imagePicker = ImagePicker();
+//   XFile? image;
+//   Future<XFile?> getImage() async {
+//     try {
+//       image = await imagePicker.pickImage(source: ImageSource.gallery);
+//       emit(profileImageSuccessState());
+//       return image;
+//     } on FirebaseAuthException catch (e) {
+//       emit(profileImageErrorState(e.message));
+//     }
+//     return null;
+//   }
+// }
+
+// class uploadImage extends Cubit<socialStates> {
+//   uploadImage() : super(getPostImageLoading());
+//   final storage = FirebaseStorage.instance;
+
+//   String fileProfileImage = '';
+//   String upload(Future<XFile?> profileImage) {
+//     try {
+//       File file = File(profileImage.then((value) => value!.path).toString());
+//       storage
+//           .ref()
+//           .child('users/${Uri.file(file.path).pathSegments.last}')
+//           .putFile(file)
+//           .then((value) {
+//         value.ref.getDownloadURL().then((value) {
+//           fileProfileImage = value;
+//           return fileProfileImage;
+//         });
+//       });
+//       return fileProfileImage;
+//     } on FirebaseAuthException catch (e) {
+//       emit(profileImageErrorState(e.message));
+//     }
+//     return '';
+//   }
+// }

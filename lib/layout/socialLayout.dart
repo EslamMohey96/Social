@@ -22,7 +22,12 @@ class socialLayout extends StatelessWidget {
           return Scaffold(
             drawer: Drawer(
               backgroundColor: Colors.black,
-              child: ListView(
+              child: cubit.user_model_Done==0?
+              Center(
+                child:CircularProgressIndicator(),
+                )
+              :
+              ListView(
                 padding: EdgeInsets.zero,
                 children: [
                   UserAccountsDrawerHeader(
@@ -150,6 +155,7 @@ class socialLayout extends StatelessWidget {
                           key: 'uId',
                         );
                       }).then((value) {
+                        
                         print(uIdConst);
                         myLoginCubit.get(context).changeUIdDone = false;
                         socialCubit.get(context).currentIndex = 0;
@@ -179,7 +185,11 @@ class socialLayout extends StatelessWidget {
                 ),
               ],
             ),
-            body: cubit.screens[cubit.currentIndex],
+            body: cubit.user_model_Done==0?
+              Center(
+                child:CircularProgressIndicator(),
+                )
+              :cubit.screens[cubit.currentIndex],
             bottomNavigationBar: BottomNavyBar(
               backgroundColor: Colors.black,
               selectedIndex: cubit.currentIndex,
