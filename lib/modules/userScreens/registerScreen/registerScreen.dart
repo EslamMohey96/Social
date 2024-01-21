@@ -207,7 +207,7 @@ class registerScreen extends StatelessWidget {
                                       );
                                     }
                                   },
-                                  widget: Text("SignUp"),
+                                  widget: Text("Sign Up"),
                                 ),
                               )
                             : Center(

@@ -22,4 +22,4 @@ class loginErrorState extends myLoginStates {
   loginErrorState(this.error) {
     toastMessage(message: error);
   }
-}
+} 

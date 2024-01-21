@@ -25,14 +25,10 @@ class socialCubit extends Cubit<socialStates> {
   GlobalKey<FormState> formKeyPost = GlobalKey();
   GlobalKey<FormState> formKeyMassage = GlobalKey();
 
-  late TextEditingController nameController =
-      TextEditingController(text: user_model!.name);
-  late TextEditingController bioController =
-      TextEditingController(text: user_model!.bio);
-  late TextEditingController emailController =
-      TextEditingController(text: user_model!.email);
-  late TextEditingController phoneController =
-      TextEditingController(text: user_model!.phone);
+  late TextEditingController nameController;
+  late TextEditingController bioController;
+  late TextEditingController phoneController;
+  late TextEditingController emailController = TextEditingController();
   late TextEditingController postController = TextEditingController();
   late TextEditingController chatController = TextEditingController();
 
@@ -192,7 +188,7 @@ class socialCubit extends Cubit<socialStates> {
       await FirebaseFirestore.instance.collection('users').doc(uIdConst).set({
         "name": nameController.text,
         "bio": bioController.text,
-        "email": emailController.text,
+        "email": user_model!.email,
         "phone": phoneController.text,
         "isEmailVerified": false,
         "uId": user_model!.uId,
@@ -222,6 +218,11 @@ class socialCubit extends Cubit<socialStates> {
           .then((value) {
         user_model = userModel.fromJson(value.data());
       }).then((value) {
+        fileProfileImage = user_model!.image;
+        fileCoverImage = user_model!.background;
+        nameController = TextEditingController(text: user_model!.name);
+        bioController = TextEditingController(text: user_model!.bio);
+        phoneController = TextEditingController(text: user_model!.phone);
         user_model_Done = 1;
         emit(userDataSuccessState());
       });
@@ -272,7 +273,8 @@ class socialCubit extends Cubit<socialStates> {
           .doc(receiver)
           .collection('massages')
           .add({
-        'date':  DateFormat('yyyy-MM-dd hh:mm:ss').format(DateTime.now()).toString(),
+        'date':
+            DateFormat('yyyy-MM-dd hh:mm:ss').format(DateTime.now()).toString(),
         'sender': user_model!.uId,
         'receiver': receiver,
         'text': text,
@@ -286,7 +288,9 @@ class socialCubit extends Cubit<socialStates> {
             .doc(user_model!.uId)
             .collection('massages')
             .add({
-          'date':  DateFormat('yyyy-MM-dd hh:mm:ss').format(DateTime.now()).toString(),
+          'date': DateFormat('yyyy-MM-dd hh:mm:ss')
+              .format(DateTime.now())
+              .toString(),
           'sender': user_model!.uId,
           'receiver': receiver,
           'text': text,
@@ -311,7 +315,7 @@ class socialCubit extends Cubit<socialStates> {
           .collection('chats')
           .doc(receiver)
           .collection("massages")
-          .orderBy("date")          
+          .orderBy("date")
           .snapshots()
           .listen((event) {
         massages_list = [];
@@ -344,3 +348,46 @@ class socialCubit extends Cubit<socialStates> {
     emit(changeNavState());
   }
 }
+
+// class getImageByImagePicker extends Cubit<socialStates> {
+//   getImageByImagePicker() : super(getPostImageLoading());
+//    static getImageByImagePicker get(context) => BlocProvider.of(context);
+//   ImagePicker imagePicker = ImagePicker();
+//   XFile? image;
+//   Future<XFile?> getImage() async {
+//     try {
+//       image = await imagePicker.pickImage(source: ImageSource.gallery);
+//       emit(profileImageSuccessState());
+//       return image;
+//     } on FirebaseAuthException catch (e) {
+//       emit(profileImageErrorState(e.message));
+//     }
+//     return null;
+//   }
+// }
+
+// class uploadImage extends Cubit<socialStates> {
+//   uploadImage() : super(getPostImageLoading());
+//   final storage = FirebaseStorage.instance;
+
+//   String fileProfileImage = '';
+//   String upload(Future<XFile?> profileImage) {
+//     try {
+//       File file = File(profileImage.then((value) => value!.path).toString());
+//       storage
+//           .ref()
+//           .child('users/${Uri.file(file.path).pathSegments.last}')
+//           .putFile(file)
+//           .then((value) {
+//         value.ref.getDownloadURL().then((value) {
+//           fileProfileImage = value;
+//           return fileProfileImage;
+//         });
+//       });
+//       return fileProfileImage;
+//     } on FirebaseAuthException catch (e) {
+//       emit(profileImageErrorState(e.message));
+//     }
+//     return '';
+//   }
+// }

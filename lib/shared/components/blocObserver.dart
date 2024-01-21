@@ -1,16 +1,19 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class blocObserver extends BlocObserver {
   @override
   void onCreate(BlocBase bloc) {
     super.onCreate(bloc);
-    print('onCreate -- ${bloc.runtimeType}');
+    print('-----------------onCreate--------------------\n'
+        'onCreate -- ${bloc.runtimeType}');
   }
 
   @override
   void onChange(BlocBase bloc, Change change) {
     super.onChange(bloc, change);
-    print('onChange -- ${bloc.runtimeType} , $change');
+    print('-----------------onChange--------------------\n'
+        'onChange -- ${bloc.runtimeType} , $change');
   }
 
   @override
@@ -48,6 +51,21 @@ class blocObserver extends BlocObserver {
   @override
   void onClose(BlocBase bloc) {
     super.onClose(bloc);
-    print('onClose -- ${bloc.runtimeType}');
+    print('-----------------onClose--------------------\n'
+        'onClose -- ${bloc.runtimeType}');
+  }
+}
+
+class MyWidget extends StatefulWidget {
+  const MyWidget({super.key});
+
+  @override
+  State<MyWidget> createState() => _MyWidgetState();
+}
+
+class _MyWidgetState extends State<MyWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }

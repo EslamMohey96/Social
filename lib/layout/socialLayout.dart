@@ -155,6 +155,7 @@ class socialLayout extends StatelessWidget {
                           key: 'uId',
                         );
                       }).then((value) {
+                        
                         print(uIdConst);
                         myLoginCubit.get(context).changeUIdDone = false;
                         socialCubit.get(context).currentIndex = 0;
